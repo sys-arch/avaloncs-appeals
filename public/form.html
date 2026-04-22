@@ -1,331 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<title>AvalonCS Appeal Form</title>
 
-    <title>AvalonCS Appeal Form</title>
-    <meta name="description" content="Submit a detailed appeal to AvalonCS through the official appeal form.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #0a0d14;
+    --card: rgba(16,21,34,0.9);
+    --border: rgba(255,255,255,0.08);
+    --text: #f3f6ff;
+    --muted: #aab6d3;
+    --accent: #f59e0b;
+    --danger: #ff6b6b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Inter, sans-serif;
+    color: var(--text);
+    background: linear-gradient(180deg,#080b12,#0a0d14);
+}
+
+.appeal-page {
+    width: min(1100px, 95%);
+    margin: auto;
+    padding: 30px 0;
+}
+
+.user-panel, .form-panel, .notice-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.user-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.user-avatar {
+    border-radius: 50%;
+}
+
+.user-name {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.user-email {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.ban-reason-box {
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(245,158,11,0.1);
+    border-radius: 12px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-control {
+    width: 100%;
+    min-height: 150px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #0b0f18;
+    color: white;
+    padding: 14px;
+    resize: none;
+}
+
+.form-control.is-invalid {
+    border-color: var(--danger);
+}
+
+.field-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 0.85rem;
+}
+
+.submit-btn {
+    background: linear-gradient(#f6ae2d,#f59e0b);
+    border: none;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.legal-box {
+    margin-top: 25px;
+    padding: 16px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.legal-box strong {
+    color: white;
+}
+
+</style>
 </head>
-<body class="appeal-body">
-    <main class="appeal-page">
-        <section class="user-panel">
-            <div class="user-row">
-                <img
-                    id="avatar"
-                    class="user-avatar"
-                    width="56"
-                    height="56"
-                    alt="Your avatar"
-                />
-                <div class="user-meta">
-                    <span class="user-label">Signed in as</span>
-                    <h1 id="username" class="user-name"></h1>
-                    <span id="email" class="user-email"></span>
-                </div>
-            </div>
 
-            <div class="ban-reason-box" id="banReasonBox">
-                <span class="ban-reason-title">Recorded ban reason</span>
-                <p id="apiBanReason" class="ban-reason-text"></p>
-            </div>
-        </section>
+<body>
 
-        <section class="form-panel">
-            <div class="form-header">
-                <span class="section-badge">Official Appeal Form</span>
-                <h2>Ban Appeal Submission</h2>
-                <p>
-                    Complete this form carefully and honestly. Very short, vague, false or low-effort
-                    appeals may be denied without further review. Each answer must be detailed enough
-                    to help the AvalonCS team understand your case properly.
-                </p>
-            </div>
+<main class="appeal-page">
 
-            <div class="notice-box">
-                <h3>Before submitting</h3>
-                <ul>
-                    <li>Be respectful and truthful in every answer.</li>
-                    <li>Explain what happened clearly and take responsibility where appropriate.</li>
-                    <li>Do not use AI-generated, copied or template-style answers.</li>
-                    <li>Every field below has a minimum length requirement.</li>
-                </ul>
-            </div>
+<section class="user-panel">
+<div class="user-row">
+<img id="avatar" class="user-avatar" width="56" height="56">
+<div>
+<h1 id="username" class="user-name"></h1>
+<span id="email" class="user-email"></span>
+</div>
+</div>
 
-            <form class="appeal-form" method="post" name="appeal" action="/success" netlify novalidate>
-                <input type="hidden" id="token" name="token">
-                <input type="hidden" id="emailInput" name="email">
+<div class="ban-reason-box" id="banReasonBox">
+<p id="apiBanReason"></p>
+</div>
+</section>
 
-                <div class="form-group">
-                    <label for="banReason">
-                        1. Explain in detail why you were banned.
-                    </label>
-                    <p class="field-help">
-                        Describe what happened from your point of view. Include the events, your actions,
-                        what rule or behaviour may have led to the punishment, and any relevant context.
-                    </p>
-                    <div class="textInput">
-                        <textarea
-                            class="form-control"
-                            id="banReason"
-                            name="banReason"
-                            required
-                            minlength="200"
-                            maxlength="1800"
-                            data-minlength="200"
-                            placeholder="Write a complete explanation of the incident, including what happened, where it happened, and what you personally did."
-                        ></textarea>
-                        <div class="field-footer">
-                            <span class="minimum-note">Minimum 200 characters</span>
-                            <span class="remainingLength"></span>
-                        </div>
-                    </div>
-                    <div class="error-message"></div>
-                </div>
+<section class="form-panel">
 
-                <div class="form-group">
-                    <label for="appealText">
-                        2. Why should this punishment be reduced or removed?
-                    </label>
-                    <p class="field-help">
-                        Explain why you believe a second chance should be considered. Show reflection,
-                        accountability and any change in attitude or understanding since the punishment.
-                    </p>
-                    <div class="textInput">
-                        <textarea
-                            class="form-control"
-                            id="appealText"
-                            name="appealText"
-                            required
-                            minlength="250"
-                            maxlength="1800"
-                            data-minlength="250"
-                            placeholder="Explain why your appeal should be accepted, what you have learned, and why staff should trust that the situation will not happen again."
-                        ></textarea>
-                        <div class="field-footer">
-                            <span class="minimum-note">Minimum 250 characters</span>
-                            <span class="remainingLength"></span>
-                        </div>
-                    </div>
-                    <div class="error-message"></div>
-                </div>
+<form class="appeal-form" method="post" action="/success" netlify novalidate>
 
-                <div class="form-group">
-                    <label for="futureActions">
-                        3. What specific steps will you take to avoid this happening again?
-                    </label>
-                    <p class="field-help">
-                        Give concrete actions, not generic promises. Mention what rules you will follow,
-                        what behaviour you will change, and how you will act differently in the future.
-                    </p>
-                    <div class="textInput">
-                        <textarea
-                            class="form-control"
-                            id="futureActions"
-                            name="futureActions"
-                            required
-                            minlength="200"
-                            maxlength="1800"
-                            data-minlength="200"
-                            placeholder="Describe the specific actions you will take in the future to prevent another punishment."
-                        ></textarea>
-                        <div class="field-footer">
-                            <span class="minimum-note">Minimum 200 characters</span>
-                            <span class="remainingLength"></span>
-                        </div>
-                    </div>
-                    <div class="error-message"></div>
-                </div>
+<input type="hidden" id="token" name="token">
+<input type="hidden" id="emailInput" name="email">
 
-                <div class="form-group">
-                    <label for="additionalContext">
-                        4. Is there any additional context the staff team should know?
-                    </label>
-                    <p class="field-help">
-                        Use this field only for genuinely relevant information: misunderstandings, context
-                        that may not be visible in logs, or anything important that helps clarify the case.
-                    </p>
-                    <div class="textInput">
-                        <textarea
-                            class="form-control"
-                            id="additionalContext"
-                            name="additionalContext"
-                            required
-                            minlength="150"
-                            maxlength="1500"
-                            data-minlength="150"
-                            placeholder="Add any relevant context that may help the staff team review your case more fairly and accurately."
-                        ></textarea>
-                        <div class="field-footer">
-                            <span class="minimum-note">Minimum 150 characters</span>
-                            <span class="remainingLength"></span>
-                        </div>
-                    </div>
-                    <div class="error-message"></div>
-                </div>
+<!-- Campo 1 -->
+<div class="form-group">
+<label>Why were you banned?</label>
+<textarea class="form-control" id="banReason" name="banReason" required minlength="200"></textarea>
+<div class="field-footer">
+<span>Min 200 chars</span>
+<span class="remainingLength"></span>
+</div>
+<div class="error-message"></div>
+</div>
 
-                <div class="form-check-box">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="honestyConfirm" name="honestyConfirm" required>
-                        <span>
-                            I confirm that this appeal is truthful, respectful, written by me, and submitted in good faith.
-                        </span>
-                    </label>
-                    <div class="error-message checkbox-error"></div>
-                </div>
+<!-- Campo 2 -->
+<div class="form-group">
+<label>Why should you be unbanned?</label>
+<textarea class="form-control" id="appealText" name="appealText" required minlength="250"></textarea>
+<div class="field-footer">
+<span>Min 250 chars</span>
+<span class="remainingLength"></span>
+</div>
+<div class="error-message"></div>
+</div>
 
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">Submit Appeal</button>
-                </div>
-            </form>
-        </section>
-    </main>
+<!-- Campo 3 -->
+<div class="form-group">
+<label>What will you do differently?</label>
+<textarea class="form-control" id="futureActions" name="futureActions" required minlength="200"></textarea>
+<div class="field-footer">
+<span>Min 200 chars</span>
+<span class="remainingLength"></span>
+</div>
+<div class="error-message"></div>
+</div>
 
-    <script>
-        function parseJwt(token) {
-            const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split('')
-                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                    .join('')
-            );
+<!-- RGPD -->
+<div class="form-group">
+<label class="checkbox-label">
+<input type="checkbox" id="privacyConfirm" required>
+<span>I accept the <a href="https://avaloncs.com/gdpr" target="_blank">Privacy Policy</a></span>
+</label>
+<div class="error-message" id="privacyError"></div>
+</div>
 
-            return JSON.parse(jsonPayload);
-        }
+<button type="submit" class="submit-btn">Submit Appeal</button>
 
-        const params = new URLSearchParams(document.location.search.substring(1));
-        if (!params.has("token")) {
-            window.location.href = `/error?msg=${encodeURIComponent("Missing token")}`;
-        }
+</form>
 
-        const jwt = params.get("token");
-        const userInfo = parseJwt(jwt);
+<!-- BLOQUE LEGAL -->
+<div class="legal-box">
+<p>✅ By submitting your appeal, you accept AvalonCS’s Privacy Policy and consent to the use of your personal data solely to process this request.</p>
 
-        const avatar = userInfo.avatar
-            ? `avatars/${encodeURIComponent(userInfo.id)}/${encodeURIComponent(userInfo.avatar)}.webp`
-            : `embed/avatars/${Number(BigInt(userInfo.id) >> 22n) % 6}.png`;
+<p><strong>Data Controller:</strong> Avalon Community Servers</p>
+<p><strong>Purpose:</strong> Manage appeals related to game server sanctions</p>
+<p><strong>Legal Basis:</strong> Your express consent</p>
+<p><strong>Recipient:</strong> Avalon Community Servers</p>
+<p><strong>Rights:</strong> Access, rectify, delete, limit, portability and erasure</p>
+</div>
 
-        document.getElementById("avatar").src = `https://cdn.discordapp.com/${avatar}?size=256`;
-        document.getElementById("username").textContent = userInfo.username;
+</section>
 
-        const emailElement = document.getElementById("email");
-        const userEmail = userInfo.email || "";
-        emailElement.textContent = userEmail || "Email not available";
+</main>
 
-        const banReason = document.getElementById("apiBanReason");
-        const banReasonBox = document.getElementById("banReasonBox");
-        banReason.textContent = userInfo.reason || "Hidden or unknown";
+<script>
 
-        if (!userInfo.reason) {
-            banReasonBox.style.display = "none";
-        }
+// JWT
+function parseJwt(token){
+const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+return JSON.parse(atob(base64));
+}
 
-        document.getElementById("token").value = jwt;
-        document.getElementById("emailInput").value = userEmail;
+const params = new URLSearchParams(location.search);
+if(!params.has("token")) location.href="/error";
 
-        function getTrimmedLength(value) {
-            return value.replace(/\s+/g, ' ').trim().length;
-        }
+const jwt = params.get("token");
+const userInfo = parseJwt(jwt);
 
-        function updateTextareaUI(textarea) {
-            textarea.style.height = "auto";
-            textarea.style.height = `${textarea.scrollHeight}px`;
+document.getElementById("username").textContent = userInfo.username;
+document.getElementById("email").textContent = userInfo.email || "Email not available";
+document.getElementById("token").value = jwt;
+document.getElementById("emailInput").value = userInfo.email || "";
 
-            const wrapper = textarea.closest(".textInput");
-            const remainingLength = wrapper.querySelector(".remainingLength");
-            const maxLength = Number(textarea.maxLength);
-            const charactersRemaining = maxLength - textarea.value.length;
+const form = document.querySelector("form");
+const privacy = document.getElementById("privacyConfirm");
+const privacyError = document.getElementById("privacyError");
 
-            remainingLength.textContent = `${charactersRemaining} characters left`;
+form.addEventListener("submit", e => {
+let valid = true;
 
-            if (charactersRemaining <= 150) {
-                remainingLength.classList.add("lowOnSpace");
-            } else {
-                remainingLength.classList.remove("lowOnSpace");
-            }
-        }
+if(!privacy.checked){
+privacyError.textContent = "You must accept the privacy policy.";
+valid = false;
+}
 
-        function validateField(textarea) {
-            const group = textarea.closest(".form-group");
-            const errorBox = group.querySelector(".error-message");
-            const minLength = Number(textarea.dataset.minlength || textarea.minLength || 0);
-            const trimmedLength = getTrimmedLength(textarea.value);
+if(!valid) e.preventDefault();
+});
 
-            textarea.classList.remove("is-invalid");
-            errorBox.textContent = "";
+</script>
 
-            if (!trimmedLength) {
-                textarea.classList.add("is-invalid");
-                errorBox.textContent = "This field is required.";
-                return false;
-            }
-
-            if (trimmedLength < minLength) {
-                textarea.classList.add("is-invalid");
-                errorBox.textContent = `Please enter at least ${minLength} meaningful characters. Current length: ${trimmedLength}.`;
-                return false;
-            }
-
-            return true;
-        }
-
-        const textareas = [...document.querySelectorAll(".textInput textarea")];
-
-        textareas.forEach(textarea => {
-            updateTextareaUI(textarea);
-
-            textarea.addEventListener("input", () => {
-                updateTextareaUI(textarea);
-                validateField(textarea);
-            });
-
-            textarea.addEventListener("blur", () => {
-                validateField(textarea);
-            });
-        });
-
-        const form = document.querySelector(".appeal-form");
-        const button = document.querySelector(".submit-btn");
-        const honestyConfirm = document.getElementById("honestyConfirm");
-        const checkboxError = document.querySelector(".checkbox-error");
-
-        form.addEventListener("submit", event => {
-            let isValid = true;
-
-            textareas.forEach(textarea => {
-                if (!validateField(textarea)) {
-                    isValid = false;
-                }
-            });
-
-            checkboxError.textContent = "";
-            if (!honestyConfirm.checked) {
-                checkboxError.textContent = "You must confirm this statement before submitting.";
-                isValid = false;
-            }
-
-            if (!isValid) {
-                event.preventDefault();
-
-                const firstInvalid = form.querySelector(".is-invalid") || (!honestyConfirm.checked ? honestyConfirm : null);
-                if (firstInvalid) {
-                    firstInvalid.focus();
-                }
-
-                return;
-            }
-
-            button.disabled = true;
-            button.textContent = "Submitting...";
-        }, false);
-    </script>
-
-    <script src="script.js"></script>
 </body>
 </html>
