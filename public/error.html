@@ -1,29 +1,235 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-        <title>Error</title>
-    </head>
-    <body class="d-flex h-100 justify-content-center align-items-center">
-        <div class="container text-center mb-0 justify-content-center align-items-center">
-            <h1 id="msg" class="text-danger"></h1>
-            <a class="btn mt-4" id="login" href="/">
-                Back to beginning
-            </a>
-        </div>
-        <script>
-            const msg = new URLSearchParams(
-                document.location.search.substring(1)
-            ).get("msg");
-            const msgContainer = document.getElementById("msg");
-            msgContainer.innerText = msg ? msg : "It seems like your Discord account isn't banned. Try joining the server from a different IP!";
-        </script>
-        <script src="script.js"></script>
-    </body>
+    <title>AvalonCS Appeals - Error</title>
+    <meta name="description" content="An error occurred while trying to access the AvalonCS appeal platform.">
+    <style>
+        .error-body {
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(239, 68, 68, 0.10), transparent 28%),
+        linear-gradient(180deg, #080b12 0%, #0a0d14 100%);
+}
+
+.error-page {
+    min-height: 100vh;
+    width: min(calc(100% - 32px), 860px);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 0;
+}
+
+.error-card {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(20, 27, 44, 0.95) 0%, rgba(14, 19, 31, 0.96) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: 38px 30px;
+    text-align: center;
+}
+
+.error-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.22);
+    color: #ff7b7b;
+}
+
+.error-icon svg {
+    width: 34px;
+    height: 34px;
+}
+
+.error-badge {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(239, 68, 68, 0.10);
+    border: 1px solid rgba(239, 68, 68, 0.22);
+    color: #ff8b8b;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.error-card h1 {
+    margin: 18px 0 12px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.08;
+    font-weight: 800;
+}
+
+.error-intro {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.error-message-box,
+.error-help-box {
+    margin-top: 24px;
+    text-align: left;
+    background: rgba(8, 11, 18, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    padding: 20px 18px;
+}
+
+.error-message-label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ff9a9a;
+}
+
+.error-message-text {
+    margin: 0;
+    color: #ffd2d2;
+    line-height: 1.75;
+    word-break: break-word;
+}
+
+.error-help-box h2 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.error-help-box ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--muted);
+    line-height: 1.75;
+}
+
+.error-actions {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0 24px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #f6ae2d 0%, #f59e0b 100%);
+    color: #111;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1rem;
+    box-shadow: 0 12px 28px rgba(245, 158, 11, 0.25);
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.03);
+    color: #111;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .error-page {
+        width: min(calc(100% - 20px), 860px);
+        padding: 20px 0;
+    }
+
+    .error-card {
+        padding: 28px 18px;
+        border-radius: 20px;
+    }
+
+    .error-message-box,
+    .error-help-box {
+        padding: 18px 16px;
+    }
+
+    .back-btn {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body class="error-body">
+    <main class="error-page">
+        <section class="error-card">
+            <div class="error-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 8v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="12" cy="16.5" r="1" fill="currentColor"/>
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <span class="error-badge">Access Error</span>
+
+            <h1>We could not continue your request</h1>
+
+            <p class="error-intro">
+                Something prevented the appeal platform from loading correctly. Please review the
+                message below and return to the start page if needed.
+            </p>
+
+            <div class="error-message-box">
+                <span class="error-message-label">Error details</span>
+                <p id="msg" class="error-message-text"></p>
+            </div>
+
+            <div class="error-help-box">
+                <h2>What you can do next</h2>
+                <ul>
+                    <li>Return to the start page and log in again with Discord.</li>
+                    <li>Make sure you are using the correct Discord account.</li>
+                    <li>If the problem continues, contact the AvalonCS staff team.</li>
+                </ul>
+            </div>
+
+            <div class="error-actions">
+                <a class="back-btn" id="login" href="/">Back to beginning</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(document.location.search.substring(1));
+        const rawMsg = params.get("msg");
+        const msgContainer = document.getElementById("msg");
+
+        const fallbackMessage = "It looks like your Discord account does not currently have an active ban eligible for appeal, or this request could not be verified.";
+
+        msgContainer.textContent = rawMsg && rawMsg.trim() ? rawMsg : fallbackMessage;
+    </script>
+
+    <script src="script.js"></script>
+</body>
 </html>

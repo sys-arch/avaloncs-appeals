@@ -1,23 +1,108 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-        <title>Ban appeal</title>
-    </head>
-    <body class="h-100 d-flex flex-column justify-content-center align-items-center">
-        <div class="container text-center mb-0 justify-content-center align-items-center">
-            <h1>Ban appeal</h1>
+    <title>AvalonCS Appeals</title>
+    <meta name="description" content="Submit and manage your appeals for AvalonCS through our official appeal platform.">
+</head>
+<body>
+    <div class="page-bg"></div>
 
-            <a class="btn mt-4" id="login" href="/.netlify/functions/oauth">
-                Login with Discord
-            </a>
-        </div>
-        <script src="script.js"></script>
-    </body>
+    <main class="landing">
+        <section class="hero-card">
+            <div class="hero-badge">Official AvalonCS Platform</div>
+
+            <h1 class="hero-title">AvalonCS Appeals</h1>
+
+            <p class="hero-subtitle">
+                This is the official platform to submit appeals related to sanctions applied
+                on AvalonCS' Discord group. Here you can request a review of your case in a safe,
+                structured and transparent way.
+            </p>
+
+            <div class="hero-actions">
+                <a class="discord-btn" id="login" href="/.netlify/functions/oauth">
+                    <span class="discord-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.369A19.791 19.791 0 0 0 15.885 3c-.191.328-.403.774-.554 1.125a18.27 18.27 0 0 0-5.675 0A11.79 11.79 0 0 0 9.102 3a19.736 19.736 0 0 0-4.433 1.369C1.84 8.552 1.073 12.632 1.457 16.654a19.9 19.9 0 0 0 5.993 3.03c.484-.665.915-1.37 1.286-2.11-.705-.266-1.377-.597-2.01-.988.168-.123.332-.252.49-.385 3.874 1.82 8.08 1.82 11.908 0 .16.133.323.262.49.385-.634.392-1.307.723-2.013.989.372.738.803 1.443 1.286 2.108a19.875 19.875 0 0 0 5.995-3.03c.451-4.66-.77-8.704-3.565-12.285ZM8.02 14.213c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.175 1.095 2.156 2.418 0 1.334-.955 2.419-2.156 2.419Zm7.96 0c-1.183 0-2.156-1.085-2.156-2.419 0-1.333.955-2.418 2.156-2.418 1.212 0 2.176 1.095 2.157 2.418 0 1.334-.946 2.419-2.157 2.419Z"/>
+                        </svg>
+                    </span>
+                    Login with Discord
+                </a>
+
+                <p class="login-note">
+                    You must sign in with your Discord account before submitting or reviewing an appeal.
+                </p>
+            </div>
+        </section>
+
+        <section class="info-grid">
+            <article class="info-box">
+                <h2>What is this website?</h2>
+                <p>
+                    This website is the official entry point for appeals related to punishments,
+                    restrictions or administrative measures issued within AvalonCS' Discord group.
+                    It allows users to formally request a review under the rules and internal
+                    procedures of the community.
+                </p>
+            </article>
+
+            <article class="info-box">
+                <h2>How does it work?</h2>
+                <ol>
+                    <li>Log in with your Discord account.</li>
+                    <li>Fill in the required information and explain your situation clearly.</li>
+                    <li>Our team reviews the request and issues a response when the evaluation is completed.</li>
+                </ol>
+            </article>
+
+            <article class="info-box">
+                <h2>What data is collected?</h2>
+                <p>
+                    To process your request, we may collect information such as your Discord account
+                    identifier, your username, your email address, the text you submit, and technical records needed to protect the platform
+                    and verify the legitimacy of the request.
+                </p>
+            </article>
+
+            <article class="info-box">
+                <h2>Important information</h2>
+                <p>
+                    Submitting an appeal does not guarantee its approval. False, abusive, duplicated
+                    or incomplete submissions may be rejected without further action. Please ensure
+                    that all information provided is accurate, respectful and relevant to your case.
+                </p>
+            </article>
+        </section>
+
+        <section class="bottom-panel">
+            <div class="bottom-box">
+                <h2>Before you continue</h2>
+                <p>
+                    Please use this platform only for legitimate Discord appeal requests. This system is intended
+                    to review sanctions and related administrative actions. General support matters,
+                    account changes or unrelated requests may need to be handled through other AvalonCS channels.
+                </p>
+            </div>
+
+            <div class="bottom-box accent">
+                <h2>Transparency and review</h2>
+                <p>
+                    Every appeal is reviewed individually. The information you provide helps the AvalonCS
+                    team understand the context of your case and determine whether the original action
+                    should be maintained, modified or reversed.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

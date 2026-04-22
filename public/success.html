@@ -1,37 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-        <title>Success</title>
-    </head>
-    <body class="d-flex h-100 justify-content-center align-items-center">
-        <div class="container text-center mb-0 justify-content-center align-items-center">
-            <h1 id="msg" class="text-success"></h1>
-            <p id="description" class="text-center mt-4"></p>
-        </div>
+    <title>AvalonCS Appeals - Success</title>
+</head>
+<body class="success-body">
+    <main class="success-page">
+        <section class="success-card">
+            <div class="success-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
 
-        <script>
-            const msg = new URLSearchParams(
-                document.location.search.substring(1)
-            ).get("msg");
+            <span class="success-badge">Request Completed</span>
 
-            const msgContainer = document.getElementById("msg");
-            if (msg) {
-                msgContainer.innerText = msg;
-            } else {
-                msgContainer.innerText = "Your appeal has been submitted!";
-                const descriptionContainer = document.getElementById("description");
-                descriptionContainer.innerText =
-                    "Please keep your friend requests open so that a mod can contact you.";
-                descriptionContainer.style.display = "unset";
-            }
-        </script>
-        <script src="script.js"></script>
-    </body>
+            <h1 id="msg">Your appeal has been submitted!</h1>
+
+            <p id="description" class="success-description">
+                You will receive a response via the email associated with your Discord account.
+            </p>
+
+            <div class="success-help-box">
+                <h2>What happens next?</h2>
+                <ul id="nextSteps">
+                    <li>Your appeal will be reviewed by the AvalonCS staff team.</li>
+                    <li>Please allow time for the review process to be completed.</li>
+                    <li>If necessary, staff may contact you via email for additional information.</li>
+                </ul>
+            </div>
+
+            <div class="success-actions">
+                <a class="home-btn" href="/">Back to beginning</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(document.location.search.substring(1));
+        const msg = params.get("msg");
+
+        const msgContainer = document.getElementById("msg");
+        const descriptionContainer = document.getElementById("description");
+        const nextSteps = document.getElementById("nextSteps");
+
+        if (msg && msg.trim()) {
+            msgContainer.textContent = msg;
+            descriptionContainer.textContent = "The requested action was completed successfully.";
+
+            nextSteps.innerHTML = `
+                <li>You may now return to the main appeal platform.</li>
+                <li>If additional action is required, the AvalonCS staff team will handle it.</li>
+            `;
+        } else {
+            msgContainer.textContent = "Your appeal has been submitted!";
+            descriptionContainer.textContent = "You will receive a response via the email associated with your Discord account.";
+
+            nextSteps.innerHTML = `
+                <li>Your appeal will be reviewed by the AvalonCS staff team.</li>
+                <li>Please allow time for the review process to be completed.</li>
+                <li>If necessary, staff may contact you via email for additional information.</li>
+            `;
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
 </html>
