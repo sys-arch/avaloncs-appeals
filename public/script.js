@@ -1,4 +1,4 @@
-const backgroundImageUrl = "https://m.media-amazon.com/images/I/81qPeYw8TSL.jpg"; // URL or local file
+const backgroundImageUrl = ""; // URL or local file
 
 if(backgroundImageUrl) {
     const background = document.createElement("img");
