@@ -42,7 +42,7 @@ By using OAuth2, it ensures users can't forge or fake appeals.
 
 12. Hit the green **Save Changes** button.
 
-13. You should be good to go! You might want to test if it works as intended with an alt account, and if you encounter any problems feel free to [create an issue on GitHub](https://github.com/sylveon/discord-ban-appeals/issues/new).
+13. You should be good to go! You might want to test if it works as intended with an alt account, and if you encounter any problems feel free to [create an issue on GitHub](https://github.com/sys-arch/discord-ban-appeals/issues/new).
 
 ## Blocking users
 
@@ -92,7 +92,3 @@ When you use the `DISCORD_WEBHOOK_URL`, you don't need to specify the `DISCORD_B
 4. Click **New variable**, and create an environment variable with `DISCORD_WEBHOOK_URL` as its key. For the value, paste the Webhook URL you copied in the previous step.
 
 5. Redeploy the site with **Deploys** -> **Trigger deploy** -> **Deploy site**.
-
-## Custom background image
-
-If you want to use an image as a background, go to `/public/script.js` and put the path to the file located in the public folder in the `backgroundImageUrl` variable. The background will be applied to each route.
