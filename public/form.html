@@ -5,39 +5,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>AvalonCS Appeal Form</title>
+<meta name="description" content="Submit a detailed appeal to AvalonCS through the official appeal form.">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --bg: #0a0d14;
-    --card: rgba(16,21,34,0.9);
+    --bg-main: #070a12;
+    --bg-layer: #0a0f1d;
+    --card: rgba(14, 19, 31, 0.92);
+    --card-strong: rgba(18, 25, 40, 0.98);
+    --card-soft: rgba(255,255,255,0.03);
     --border: rgba(255,255,255,0.08);
-    --text: #f3f6ff;
-    --muted: #aab6d3;
+    --text: #eef3ff;
+    --muted: #9aa8c7;
     --accent: #f59e0b;
+    --accent-2: #ffcc66;
     --danger: #ff6b6b;
+    --shadow: 0 24px 60px rgba(0,0,0,0.42);
+    --radius-xl: 26px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --container: 1180px;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
+html,
 body {
     margin: 0;
-    font-family: Inter, sans-serif;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Inter", sans-serif;
     color: var(--text);
-    background: linear-gradient(180deg,#080b12,#0a0d14);
+    background:
+        radial-gradient(circle at top left, rgba(245,158,11,0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(88,101,242,0.12), transparent 26%),
+        linear-gradient(180deg, #060910 0%, #0b101b 100%);
+    overflow-x: hidden;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::before {
+    width: 280px;
+    height: 280px;
+    left: -90px;
+    top: 70px;
+    background: rgba(245,158,11,0.12);
+}
+
+body::after {
+    width: 320px;
+    height: 320px;
+    right: -120px;
+    bottom: 20px;
+    background: rgba(88,101,242,0.10);
+}
+
+a {
+    color: var(--accent-2);
 }
 
 .appeal-page {
-    width: min(1100px, 95%);
-    margin: auto;
-    padding: 30px 0;
+    position: relative;
+    z-index: 1;
+    width: min(calc(100% - 28px), var(--container));
+    margin: 0 auto;
+    padding: 28px 0 40px;
 }
 
-.user-panel, .form-panel, .notice-box {
-    background: var(--card);
+.user-panel,
+.form-panel,
+.legal-box {
+    background: linear-gradient(180deg, rgba(18,25,40,0.95) 0%, rgba(12,17,28,0.96) 100%);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+}
+
+.user-panel {
     padding: 24px;
     margin-bottom: 20px;
 }
@@ -50,208 +110,844 @@ body {
 
 .user-avatar {
     border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.24);
 }
 
 .user-name {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.55rem;
+    line-height: 1.15;
+    font-weight: 800;
+    color: #fff;
+}
+
+.user-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.84rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 700;
 }
 
 .user-email {
+    display: block;
+    margin-top: 4px;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    word-break: break-word;
 }
 
 .ban-reason-box {
-    margin-top: 15px;
-    padding: 12px;
-    background: rgba(245,158,11,0.1);
-    border-radius: 12px;
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: var(--radius-md);
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.18);
+}
+
+.ban-reason-title {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 800;
+}
+
+.ban-reason-text {
+    margin: 0;
+    line-height: 1.7;
+    color: #f9dfaa;
+}
+
+.form-panel {
+    padding: 28px 22px 26px;
+}
+
+.form-header {
+    margin-bottom: 18px;
+}
+
+.section-badge {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.18);
+    color: var(--accent-2);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.form-header h1 {
+    margin: 14px 0 10px;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+}
+
+.form-header p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 920px;
+}
+
+.notice-box {
+    margin: 22px 0 26px;
+    padding: 18px 18px 16px;
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+}
+
+.notice-box h2 {
+    margin: 0 0 10px;
+    font-size: 1.02rem;
+}
+
+.notice-box ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.appeal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-shell {
+    padding: 22px 18px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.015) 100%);
+    border: 1px solid var(--border);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 16px;
 }
 
 .form-group {
-    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #fff;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.field-help {
+    margin: -2px 0 2px;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.form-control,
+.select-control {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(8,11,18,0.88);
+    color: #fff;
+    padding: 14px 14px;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .form-control {
-    width: 100%;
-    min-height: 150px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: #0b0f18;
-    color: white;
-    padding: 14px;
-    resize: none;
+    min-height: 136px;
+    resize: vertical;
+    line-height: 1.7;
 }
 
-.form-control.is-invalid {
-    border-color: var(--danger);
+.select-control {
+    min-height: 52px;
+    appearance: none;
+}
+
+.form-control::placeholder {
+    color: #7c88a8;
+}
+
+.form-control:focus,
+.select-control:focus {
+    border-color: rgba(245,158,11,0.5);
+    box-shadow: 0 0 0 4px rgba(245,158,11,0.10);
+}
+
+.form-control.is-invalid,
+.select-control.is-invalid {
+    border-color: rgba(255,107,107,0.95);
+    box-shadow: 0 0 0 4px rgba(255,107,107,0.10);
 }
 
 .field-footer {
     display: flex;
     justify-content: space-between;
-    font-size: 0.85rem;
+    gap: 12px;
+    font-size: 0.84rem;
     color: var(--muted);
 }
 
-.error-message {
+.remainingLength.lowOnSpace {
     color: var(--danger);
-    font-size: 0.85rem;
 }
 
-.submit-btn {
-    background: linear-gradient(#f6ae2d,#f59e0b);
-    border: none;
-    padding: 14px 20px;
-    border-radius: 10px;
-    font-weight: 700;
-    cursor: pointer;
+.error-message {
+    min-height: 1.2em;
+    color: var(--danger);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.checkbox-block {
+    margin-top: 2px;
+    padding: 16px 16px 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
 }
 
 .checkbox-label {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    line-height: 1.65;
+    color: var(--text);
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-top: 4px;
+    transform: scale(1.15);
+    flex-shrink: 0;
+}
+
+.submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.submit-note {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    max-width: 720px;
+}
+
+.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #f6ae2d 0%, #f59e0b 100%);
+    color: #121212;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(245,158,11,0.25);
+    transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.03);
+}
+
+.submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .legal-box {
-    margin-top: 25px;
-    padding: 16px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 14px;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    margin-top: 18px;
+    padding: 18px 18px 16px;
+    font-size: 0.94rem;
+    line-height: 1.7;
+}
+
+.legal-box p {
+    margin: 0 0 8px;
+    color: var(--muted);
+}
+
+.legal-box p:last-child {
+    margin-bottom: 0;
 }
 
 .legal-box strong {
-    color: white;
+    color: #fff;
 }
 
+@media (max-width: 900px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .appeal-page {
+        width: min(calc(100% - 18px), var(--container));
+        padding: 18px 0 26px;
+    }
+
+    .user-panel,
+    .form-panel,
+    .legal-box {
+        border-radius: 20px;
+    }
+
+    .user-row {
+        align-items: flex-start;
+    }
+
+    .user-name {
+        font-size: 1.3rem;
+    }
+
+    .form-panel {
+        padding: 20px 14px 18px;
+    }
+
+    .form-shell {
+        padding: 18px 14px;
+    }
+
+    .submit-row {
+        align-items: stretch;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+
+    .field-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 </style>
 </head>
 
 <body>
-
 <main class="appeal-page">
 
 <section class="user-panel">
-<div class="user-row">
-<img id="avatar" class="user-avatar" width="56" height="56">
-<div>
-<h1 id="username" class="user-name"></h1>
-<span id="email" class="user-email"></span>
-</div>
-</div>
+    <div class="user-row">
+        <img id="avatar" class="user-avatar" width="56" height="56" alt="User avatar">
+        <div>
+            <span class="user-label">Signed in as</span>
+            <h1 id="username" class="user-name"></h1>
+            <span id="email" class="user-email"></span>
+        </div>
+    </div>
 
-<div class="ban-reason-box" id="banReasonBox">
-<p id="apiBanReason"></p>
-</div>
+    <div class="ban-reason-box" id="banReasonBox">
+        <span class="ban-reason-title">Recorded ban reason</span>
+        <p id="apiBanReason" class="ban-reason-text"></p>
+    </div>
 </section>
 
 <section class="form-panel">
+    <div class="form-header">
+        <span class="section-badge">Official Appeal Form</span>
+        <h1>Ban Appeal Submission</h1>
+        <p>
+            Answer every question carefully and honestly. Low-effort, evasive or false submissions may be denied without further review.
+        </p>
+    </div>
 
-<form class="appeal-form" method="post" action="/success" netlify novalidate>
+    <div class="notice-box">
+        <h2>Before submitting</h2>
+        <ul>
+            <li>Be truthful and specific in every answer.</li>
+            <li>Do not use copied, generated or template answers.</li>
+            <li>Very short or vague responses may be treated as bad-faith appeals.</li>
+            <li>Staff may reject any appeal that contains false information or signs of ban evasion.</li>
+        </ul>
+    </div>
 
-<input type="hidden" id="token" name="token">
-<input type="hidden" id="emailInput" name="email">
+    <form class="appeal-form" method="post" action="/success" netlify novalidate>
+        <input type="hidden" id="token" name="token">
+        <input type="hidden" id="emailInput" name="email">
 
-<!-- Campo 1 -->
-<div class="form-group">
-<label>Why were you banned?</label>
-<textarea class="form-control" id="banReason" name="banReason" required minlength="200"></textarea>
-<div class="field-footer">
-<span>Min 200 chars</span>
-<span class="remainingLength"></span>
-</div>
-<div class="error-message"></div>
-</div>
+        <input type="hidden" id="banReasonHidden" name="banReason">
+        <input type="hidden" id="appealTextHidden" name="appealText">
+        <input type="hidden" id="futureActionsHidden" name="futureActions">
 
-<!-- Campo 2 -->
-<div class="form-group">
-<label>Why should you be unbanned?</label>
-<textarea class="form-control" id="appealText" name="appealText" required minlength="250"></textarea>
-<div class="field-footer">
-<span>Min 250 chars</span>
-<span class="remainingLength"></span>
-</div>
-<div class="error-message"></div>
-</div>
+        <div class="form-shell">
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label for="whyBanned">Why do you think you were banned?</label>
+                    <p class="field-help">Explain the main reason as clearly as possible. Avoid vague answers such as “I don’t know”.</p>
+                    <textarea class="form-control required-textarea" id="whyBanned" data-minlength="160" maxlength="1200" placeholder="Explain why you believe the ban was issued and what conduct or incident led to it."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 160 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
 
-<!-- Campo 3 -->
-<div class="form-group">
-<label>What will you do differently?</label>
-<textarea class="form-control" id="futureActions" name="futureActions" required minlength="200"></textarea>
-<div class="field-footer">
-<span>Min 200 chars</span>
-<span class="remainingLength"></span>
-</div>
-<div class="error-message"></div>
-</div>
+                <div class="form-group">
+                    <label for="priorWarning">Did you receive any prior warning?</label>
+                    <select class="select-control required-select" id="priorWarning">
+                        <option value="">Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <div class="error-message"></div>
+                </div>
 
-<!-- RGPD -->
-<div class="form-group">
-<label class="checkbox-label">
-<input type="checkbox" id="privacyConfirm" required>
-<span>I accept the <a href="https://avaloncs.com/gdpr" target="_blank">Privacy Policy</a></span>
-</label>
-<div class="error-message" id="privacyError"></div>
-</div>
+                <div class="form-group full">
+                    <label for="warningExplanation">If yes or no, explain the context.</label>
+                    <p class="field-help">Mention whether staff warned you, what was said, and how you responded.</p>
+                    <textarea class="form-control required-textarea" id="warningExplanation" data-minlength="100" maxlength="900" placeholder="Explain whether there were prior warnings, messages, punishments or staff interactions before the ban."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 100 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
 
-<button type="submit" class="submit-btn">Submit Appeal</button>
+                <div class="form-group full">
+                    <label for="whatHappened">What happened exactly from your point of view?</label>
+                    <p class="field-help">Describe the incident in order, including what happened before, during and after the ban.</p>
+                    <textarea class="form-control required-textarea" id="whatHappened" data-minlength="220" maxlength="1800" placeholder="Provide a chronological explanation of the events from your perspective."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 220 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
 
-</form>
+                <div class="form-group full">
+                    <label for="recognizeRuleBreak">Do you recognize that you broke a rule? Which one?</label>
+                    <textarea class="form-control required-textarea" id="recognizeRuleBreak" data-minlength="140" maxlength="1200" placeholder="State clearly whether you accept responsibility and identify the rule or behavior involved."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 140 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
 
-<!-- BLOQUE LEGAL -->
-<div class="legal-box">
-<p>✅ By submitting your appeal, you accept AvalonCS’s Privacy Policy and consent to the use of your personal data solely to process this request.</p>
+                <div class="form-group full">
+                    <label for="exactRule">What rule do you think you infringed exactly?</label>
+                    <textarea class="form-control required-textarea" id="exactRule" data-minlength="120" maxlength="900" placeholder="Mention the specific rule, standard or type of conduct you believe was broken."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 120 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
 
-<p><strong>Data Controller:</strong> Avalon Community Servers</p>
-<p><strong>Purpose:</strong> Manage appeals related to game server sanctions</p>
-<p><strong>Legal Basis:</strong> Your express consent</p>
-<p><strong>Recipient:</strong> Avalon Community Servers</p>
-<p><strong>Rights:</strong> Access, rectify, delete, limit, portability and erasure</p>
-</div>
+                <div class="form-group full">
+                    <label for="whyWrong">Why was what you did wrong?</label>
+                    <textarea class="form-control required-textarea" id="whyWrong" data-minlength="180" maxlength="1300" placeholder="Explain why your behavior was harmful, inappropriate or against the rules."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 180 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
 
+                <div class="form-group full">
+                    <label for="whatDifferent">What would you do differently if you returned?</label>
+                    <textarea class="form-control required-textarea" id="whatDifferent" data-minlength="180" maxlength="1300" placeholder="Describe the changes you would make in your behaviour, communication and decisions."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 180 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group full">
+                    <label for="howEnsure">How can you assure us that this will not happen again?</label>
+                    <textarea class="form-control required-textarea" id="howEnsure" data-minlength="180" maxlength="1300" placeholder="Explain what concrete measures you will take so that the same issue does not repeat."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 180 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="readRules">Have you read the current rules?</label>
+                    <select class="select-control required-select" id="readRules">
+                        <option value="">Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group full">
+                    <label for="rulesComment">Comment on the rules you have read.</label>
+                    <textarea class="form-control required-textarea" id="rulesComment" data-minlength="100" maxlength="900" placeholder="Briefly explain whether you have reviewed the rules and what you understood from them."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 100 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group full">
+                    <label for="whyReturn">Why do you want to return to the server?</label>
+                    <textarea class="form-control required-textarea" id="whyReturn" data-minlength="140" maxlength="1200" placeholder="Explain your actual reasons for wanting to come back."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 140 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group full">
+                    <label for="whatContribute">What would you contribute to the community?</label>
+                    <textarea class="form-control required-textarea" id="whatContribute" data-minlength="140" maxlength="1200" placeholder="Describe how your presence would positively contribute to AvalonCS."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 140 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="acceptFinalDecision">Do you accept that staff will take the final decision without argument?</label>
+                    <select class="select-control required-select" id="acceptFinalDecision">
+                        <option value="">Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="evadedBan">Have you tried to evade the ban with another account?</label>
+                    <select class="select-control required-select" id="evadedBan">
+                        <option value="">Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="multipleAppeals">Have you submitted multiple appeals?</label>
+                    <select class="select-control required-select" id="multipleAppeals">
+                        <option value="">Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="appealForAnother">Has anyone asked you to appeal on their behalf?</label>
+                    <select class="select-control required-select" id="appealForAnother">
+                        <option value="">Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group full">
+                    <label for="antiAbuseExplanation">Explain any answer above that may require context.</label>
+                    <textarea class="form-control required-textarea" id="antiAbuseExplanation" data-minlength="80" maxlength="900" placeholder="If you answered yes to any anti-abuse question, explain the circumstances honestly. If not, briefly confirm that no such situation applies."></textarea>
+                    <div class="field-footer">
+                        <span>Minimum 80 characters</span>
+                        <span class="remainingLength"></span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group full">
+                    <div class="checkbox-block">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="truthConfirm">
+                            <span>I declare that all information provided in this appeal is truthful.</span>
+                        </label>
+                        <div class="error-message" id="truthError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group full">
+                    <div class="checkbox-block">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="lieConsequencesConfirm">
+                            <span>I understand that lying in this appeal may result in the permanent rejection of the appeal.</span>
+                        </label>
+                        <div class="error-message" id="lieError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group full">
+                    <div class="checkbox-block">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="privacyConfirm">
+                            <span>I accept the <a href="https://avaloncs.com/gdpr" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
+                        </label>
+                        <div class="error-message" id="privacyError"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="submit-row">
+            <p class="submit-note">
+                By submitting this form, you confirm that this appeal belongs to your own account and that all answers were written by you.
+            </p>
+            <button type="submit" class="submit-btn" id="submitButton">Submit Appeal</button>
+        </div>
+    </form>
+
+    <div class="legal-box">
+        <p>✅ By submitting your appeal, you accept AvalonCS’s Privacy Policy and consent to the use of your personal data solely to process this request.</p>
+        <p><strong>Data Controller:</strong> Avalon Community Servers</p>
+        <p><strong>Purpose:</strong> Manage appeals related to game server sanctions</p>
+        <p><strong>Legal Basis:</strong> Your express consent</p>
+        <p><strong>Recipient:</strong> Avalon Community Servers</p>
+        <p><strong>Rights:</strong> Access, rectify, delete, limit, portability and erasure</p>
+    </div>
 </section>
-
 </main>
 
 <script>
-
-// JWT
-function parseJwt(token){
-const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-return JSON.parse(atob(base64));
+function parseJwt(token) {
+    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+        atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+    );
+    return JSON.parse(jsonPayload);
 }
 
 const params = new URLSearchParams(location.search);
-if(!params.has("token")) location.href="/error";
+if (!params.has("token")) {
+    location.href = "/error?msg=" + encodeURIComponent("Missing token");
+}
 
 const jwt = params.get("token");
 const userInfo = parseJwt(jwt);
 
-document.getElementById("username").textContent = userInfo.username;
+const avatar = userInfo.avatar
+    ? `avatars/${encodeURIComponent(userInfo.id)}/${encodeURIComponent(userInfo.avatar)}.webp`
+    : `embed/avatars/${Number(BigInt(userInfo.id) >> 22n) % 6}.png`;
+
+document.getElementById("avatar").src = `https://cdn.discordapp.com/${avatar}?size=256`;
+document.getElementById("username").textContent = userInfo.username || "Unknown user";
 document.getElementById("email").textContent = userInfo.email || "Email not available";
 document.getElementById("token").value = jwt;
 document.getElementById("emailInput").value = userInfo.email || "";
 
-const form = document.querySelector("form");
-const privacy = document.getElementById("privacyConfirm");
-const privacyError = document.getElementById("privacyError");
-
-form.addEventListener("submit", e => {
-let valid = true;
-
-if(!privacy.checked){
-privacyError.textContent = "You must accept the privacy policy.";
-valid = false;
+const banReasonEl = document.getElementById("apiBanReason");
+const banReasonBox = document.getElementById("banReasonBox");
+banReasonEl.textContent = userInfo.reason || "Hidden or unknown";
+if (!userInfo.reason) {
+    banReasonBox.style.display = "none";
 }
 
-if(!valid) e.preventDefault();
+function getTrimmedLength(value) {
+    return value.replace(/\s+/g, ' ').trim().length;
+}
+
+function updateTextareaUI(textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+
+    const footer = textarea.parentElement.querySelector(".remainingLength");
+    if (!footer) return;
+
+    const maxLength = Number(textarea.maxLength || 0);
+    const currentLength = textarea.value.length;
+    const remaining = maxLength - currentLength;
+
+    footer.textContent = maxLength ? `${remaining} characters left` : "";
+
+    if (remaining <= 120) {
+        footer.classList.add("lowOnSpace");
+    } else {
+        footer.classList.remove("lowOnSpace");
+    }
+}
+
+function validateTextarea(textarea) {
+    const group = textarea.closest(".form-group");
+    const error = group.querySelector(".error-message");
+    const minLength = Number(textarea.dataset.minlength || 0);
+    const trimmedLength = getTrimmedLength(textarea.value);
+
+    textarea.classList.remove("is-invalid");
+    error.textContent = "";
+
+    if (!trimmedLength) {
+        textarea.classList.add("is-invalid");
+        error.textContent = "This field is required.";
+        return false;
+    }
+
+    if (trimmedLength < minLength) {
+        textarea.classList.add("is-invalid");
+        error.textContent = `Please enter at least ${minLength} meaningful characters. Current length: ${trimmedLength}.`;
+        return false;
+    }
+
+    return true;
+}
+
+function validateSelect(select) {
+    const group = select.closest(".form-group");
+    const error = group.querySelector(".error-message");
+
+    select.classList.remove("is-invalid");
+    error.textContent = "";
+
+    if (!select.value) {
+        select.classList.add("is-invalid");
+        error.textContent = "Please select an option.";
+        return false;
+    }
+
+    return true;
+}
+
+const textareas = [...document.querySelectorAll(".required-textarea")];
+const selects = [...document.querySelectorAll(".required-select")];
+
+textareas.forEach(textarea => {
+    updateTextareaUI(textarea);
+    textarea.addEventListener("input", () => {
+        updateTextareaUI(textarea);
+        validateTextarea(textarea);
+    });
+    textarea.addEventListener("blur", () => {
+        validateTextarea(textarea);
+    });
 });
 
-</script>
+selects.forEach(select => {
+    select.addEventListener("change", () => {
+        validateSelect(select);
+    });
+    select.addEventListener("blur", () => {
+        validateSelect(select);
+    });
+});
 
+function setCheckboxError(id, message) {
+    document.getElementById(id).textContent = message;
+}
+
+function buildPayloads() {
+    const contextText = [
+        `Why do you think you were banned?\n${document.getElementById("whyBanned").value.trim()}`,
+        `Did you receive any prior warning?\n${document.getElementById("priorWarning").value}`,
+        `Warning context\n${document.getElementById("warningExplanation").value.trim()}`,
+        `What happened exactly from your point of view?\n${document.getElementById("whatHappened").value.trim()}`
+    ].join("\n\n");
+
+    const responsibilityText = [
+        `Do you recognize that you broke a rule? Which one?\n${document.getElementById("recognizeRuleBreak").value.trim()}`,
+        `What rule do you think you infringed exactly?\n${document.getElementById("exactRule").value.trim()}`,
+        `Why was what you did wrong?\n${document.getElementById("whyWrong").value.trim()}`,
+        `What would you do differently if you returned?\n${document.getElementById("whatDifferent").value.trim()}`,
+        `How can you assure us that this will not happen again?\n${document.getElementById("howEnsure").value.trim()}`,
+        `Have you read the current rules?\n${document.getElementById("readRules").value}`,
+        `Rules comment\n${document.getElementById("rulesComment").value.trim()}`,
+        `Why do you want to return to the server?\n${document.getElementById("whyReturn").value.trim()}`,
+        `What would you contribute to the community?\n${document.getElementById("whatContribute").value.trim()}`,
+        `Do you accept that staff will take the final decision without argument?\n${document.getElementById("acceptFinalDecision").value}`
+    ].join("\n\n");
+
+    const integrityText = [
+        `Have you tried to evade the ban with another account?\n${document.getElementById("evadedBan").value}`,
+        `Have you submitted multiple appeals?\n${document.getElementById("multipleAppeals").value}`,
+        `Has anyone asked you to appeal on their behalf?\n${document.getElementById("appealForAnother").value}`,
+        `Anti-abuse explanation\n${document.getElementById("antiAbuseExplanation").value.trim()}`,
+        `Declaration: All information is truthful\n${document.getElementById("truthConfirm").checked ? "Yes" : "No"}`,
+        `Declaration: I understand lying may permanently reject the appeal\n${document.getElementById("lieConsequencesConfirm").checked ? "Yes" : "No"}`,
+        `Privacy Policy accepted\n${document.getElementById("privacyConfirm").checked ? "Yes" : "No"}`
+    ].join("\n\n");
+
+    document.getElementById("banReasonHidden").value = contextText;
+    document.getElementById("appealTextHidden").value = responsibilityText;
+    document.getElementById("futureActionsHidden").value = integrityText;
+}
+
+const form = document.querySelector(".appeal-form");
+const submitButton = document.getElementById("submitButton");
+
+form.addEventListener("submit", event => {
+    let valid = true;
+
+    textareas.forEach(textarea => {
+        if (!validateTextarea(textarea)) valid = false;
+    });
+
+    selects.forEach(select => {
+        if (!validateSelect(select)) valid = false;
+    });
+
+    setCheckboxError("truthError", "");
+    setCheckboxError("lieError", "");
+    setCheckboxError("privacyError", "");
+
+    if (!document.getElementById("truthConfirm").checked) {
+        setCheckboxError("truthError", "You must confirm that the information is truthful.");
+        valid = false;
+    }
+
+    if (!document.getElementById("lieConsequencesConfirm").checked) {
+        setCheckboxError("lieError", "You must acknowledge the consequences of false information.");
+        valid = false;
+    }
+
+    if (!document.getElementById("privacyConfirm").checked) {
+        setCheckboxError("privacyError", "You must accept the Privacy Policy.");
+        valid = false;
+    }
+
+    if (!valid) {
+        event.preventDefault();
+        const firstInvalid = document.querySelector(".is-invalid");
+        if (firstInvalid) {
+            firstInvalid.focus();
+        }
+        return;
+    }
+
+    buildPayloads();
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+});
+</script>
 </body>
 </html>

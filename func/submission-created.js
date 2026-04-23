@@ -4,6 +4,18 @@ import { API_ENDPOINT, MAX_EMBED_FIELD_CHARS, MAX_EMBED_FOOTER_CHARS } from "./h
 import { createJwt, decodeJwt } from "./helpers/jwt-helpers.js";
 import { getBan, isBlocked } from "./helpers/user-helpers.js";
 
+function getAdminRoleIds() {
+    return (process.env.ADMIN_ROLES_ID || "")
+        .split(",")
+        .map(v => v.trim())
+        .filter(Boolean);
+}
+
+function buildAdminMentions(roleIds) {
+    if (!roleIds.length) return "";
+    return roleIds.map(id => `<@&${id}>`).join(" ");
+}
+
 export async function handler(event, context) {
     let payload;
 
@@ -25,12 +37,14 @@ export async function handler(event, context) {
         };
     }
 
-    if (payload.banReason !== undefined &&
+    if (
+        payload.banReason !== undefined &&
         payload.appealText !== undefined &&
-        payload.futureActions !== undefined && 
-        payload.token !== undefined) {
-        
+        payload.futureActions !== undefined &&
+        payload.token !== undefined
+    ) {
         const userInfo = decodeJwt(payload.token);
+
         if (isBlocked(userInfo.id)) {
             return {
                 statusCode: 303,
@@ -40,7 +54,15 @@ export async function handler(event, context) {
             };
         }
 
+        const adminRoleIds = getAdminRoleIds();
+        const adminMentions = buildAdminMentions(adminRoleIds);
+
         const message = {
+            content: adminMentions || undefined,
+            allowed_mentions: {
+                parse: [],
+                roles: adminRoleIds
+            },
             embed: {
                 title: "New appeal submitted!",
                 timestamp: new Date().toISOString(),
@@ -48,6 +70,10 @@ export async function handler(event, context) {
                     {
                         name: "Submitter",
                         value: `<@${userInfo.id}> (${userInfo.username})`
+                    },
+                    {
+                        name: "Email",
+                        value: userInfo.email || "Not available"
                     },
                     {
                         name: "Why were you banned?",
@@ -63,11 +89,12 @@ export async function handler(event, context) {
                     }
                 ]
             }
-        }
+        };
 
         if (process.env.GUILD_ID && !process.env.DISCORD_WEBHOOK_URL) {
             try {
                 const ban = await getBan(userInfo.id, process.env.GUILD_ID, process.env.DISCORD_BOT_TOKEN);
+
                 if (ban !== null && ban.reason) {
                     message.embed.footer = {
                         text: `Original ban reason: ${ban.reason}`.slice(0, MAX_EMBED_FOOTER_CHARS)
@@ -76,35 +103,76 @@ export async function handler(event, context) {
             } catch (e) {
                 console.log(e);
             }
-
-            if (!process.env.DISABLE_UNBAN_LINK) {
-                const unbanUrl = new URL("/.netlify/functions/unban", DEPLOY_PRIME_URL);
-                const unbanInfo = {
-                    userId: userInfo.id
-                };
-    
-                message.components = [{
-                    type: 1,
-                    components: [{
-                        type: 2,
-                        style: 5,
-                        label: "Approve appeal and unban user",
-                        url: `${unbanUrl.toString()}?token=${encodeURIComponent(createJwt(unbanInfo))}`
-                    }]
-                }];
-            }
         }
 
         let result;
+        let createdMessage;
+
         if (!process.env.DISCORD_WEBHOOK_URL) {
-            result = await fetch(`${API_ENDPOINT}/channels/${encodeURIComponent(process.env.APPEALS_CHANNEL)}/messages`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bot ${process.env.DISCORD_BOT_TOKEN}`
-                },
-                body: JSON.stringify(message)
-            });
+            result = await fetch(
+                `${API_ENDPOINT}/channels/${encodeURIComponent(process.env.APPEALS_CHANNEL)}/messages`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bot ${process.env.DISCORD_BOT_TOKEN}`
+                    },
+                    body: JSON.stringify({
+                        content: message.content,
+                        allowed_mentions: message.allowed_mentions,
+                        embeds: [message.embed]
+                    })
+                }
+            );
+
+            if (!result.ok) {
+                console.log(JSON.stringify(await result.json()));
+                throw new Error("Failed to submit message");
+            }
+
+            createdMessage = await result.json();
+
+            if (!process.env.DISABLE_UNBAN_LINK) {
+                const approveUrl = new URL("/.netlify/functions/unban", DEPLOY_PRIME_URL);
+                const rejectUrl = new URL("/.netlify/functions/reject-appeal", DEPLOY_PRIME_URL);
+
+                const actionInfo = {
+                    userId: userInfo.id,
+                    email: userInfo.email || null,
+                    username: userInfo.username || null,
+                    sourceMessageId: createdMessage.id
+                };
+
+                await fetch(
+                    `${API_ENDPOINT}/channels/${encodeURIComponent(process.env.APPEALS_CHANNEL)}/messages/${encodeURIComponent(createdMessage.id)}`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bot ${process.env.DISCORD_BOT_TOKEN}`
+                        },
+                        body: JSON.stringify({
+                            components: [{
+                                type: 1,
+                                components: [
+                                    {
+                                        type: 2,
+                                        style: 5,
+                                        label: "Approve appeal",
+                                        url: `${approveUrl.toString()}?token=${encodeURIComponent(createJwt(actionInfo, "7d"))}`
+                                    },
+                                    {
+                                        type: 2,
+                                        style: 5,
+                                        label: "Reject appeal",
+                                        url: `${rejectUrl.toString()}?token=${encodeURIComponent(createJwt(actionInfo, "7d"))}`
+                                    }
+                                ]
+                            }]
+                        })
+                    }
+                );
+            }
         } else {
             result = await fetch(`${process.env.DISCORD_WEBHOOK_URL}`, {
                 method: "POST",
@@ -112,27 +180,29 @@ export async function handler(event, context) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    content: message.content,
+                    allowed_mentions: message.allowed_mentions,
                     embeds: [message.embed]
                 })
             });
+
+            if (!result.ok) {
+                console.log(JSON.stringify(await result.json()));
+                throw new Error("Failed to submit message");
+            }
         }
 
-        if (result.ok) {
-            if (process.env.USE_NETLIFY_FORMS) {
-                return {
-                    statusCode: 200
-                };
-            } else {
-                return {
-                    statusCode: 303,
-                    headers: {
-                        "Location": "/success"
-                    }
-                };
-            }
+        if (process.env.USE_NETLIFY_FORMS) {
+            return {
+                statusCode: 200
+            };
         } else {
-            console.log(JSON.stringify(await result.json()));
-            throw new Error("Failed to submit message");
+            return {
+                statusCode: 303,
+                headers: {
+                    "Location": "/success"
+                }
+            };
         }
     }
 
