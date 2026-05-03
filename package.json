@@ -2,6 +2,7 @@
     "type": "module",
     "dependencies": {
         "jsonwebtoken": "^9.0.0",
-        "node-fetch": "^3.2.10"
+        "node-fetch": "^3.2.10",
+        "resend": "^6.12.2"
     }
 }

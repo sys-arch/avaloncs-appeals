@@ -1,18 +1,65 @@
-import fetch from "node-fetch";
+import { Resend } from "resend";
 
-export async function sendUnbanEmail({ toEmail, toName, username }) {
-    if (!process.env.EMAIL_API_TOKEN) {
-        throw new Error("Missing EMAIL_API_TOKEN");
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const EMAIL_SOURCE = "avaloncs-ban-appeals";
+const DEFAULT_FROM_NAME = "Avalon Community Servers";
+
+function getFromAddress() {
+    const fromEmail = process.env.EMAIL_FROM_ADDRESS;
+    const fromName = process.env.EMAIL_FROM_NAME || DEFAULT_FROM_NAME;
+
+    if (!process.env.RESEND_API_KEY) {
+        throw new Error("Missing RESEND_API_KEY");
     }
 
+    if (!fromEmail) {
+        throw new Error("Missing EMAIL_FROM_ADDRESS");
+    }
+
+    return `${fromName} <${fromEmail}>`;
+}
+
+async function sendAppealEmail({ toEmail, toName, subject, html, text, type }) {
     if (!toEmail) {
         throw new Error("Missing destination email");
     }
 
+    const { data, error } = await resend.emails.send({
+        from: getFromAddress(),
+        to: [`${toName || "player"} <${toEmail}>`],
+        subject,
+        html,
+        text,
+        headers: {
+            "X-Source": EMAIL_SOURCE,
+            "X-Email-Type": type
+        },
+        tags: [
+            {
+                name: "source",
+                value: EMAIL_SOURCE
+            },
+            {
+                name: "type",
+                value: type
+            }
+        ]
+    });
+
+    if (error) {
+        console.error(error);
+        throw new Error(`Failed to send ${type} email`);
+    }
+
+    return data;
+}
+
+export async function sendUnbanEmail({ toEmail, toName, username }) {
     const safeName = toName || username || "player";
     const inviteUrl = "https://avaloncs.net/ds";
 
-    const htmlPart = `
+    const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +115,7 @@ export async function sendUnbanEmail({ toEmail, toName, username }) {
 </html>
 `.trim();
 
-    const textPart = [
+    const text = [
         "Your AvalonCS appeal has been accepted.",
         "",
         `Hello ${safeName},`,
@@ -87,56 +134,21 @@ export async function sendUnbanEmail({ toEmail, toName, username }) {
         "Avalon Community Servers"
     ].join("\n");
 
-    const response = await fetch("https://avaloncs.ipzmarketing.com/api/v1/send_emails", {
-        method: "POST",
-        headers: {
-            "X-AUTH-TOKEN": process.env.EMAIL_API_TOKEN,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            from: {
-                email: "avaloncs@avaloncs.net",
-                name: "Avalon Community Servers"
-            },
-            to: [
-                {
-                    email: toEmail,
-                    name: safeName
-                }
-            ],
-            subject: "Your AvalonCS appeal has been accepted",
-            html_part: htmlPart,
-            text_part: textPart,
-            text_part_auto: true,
-            headers: {
-                "X-Source": "avaloncs-ban-appeals"
-            },
-            smtp_tags: ["appeal-accepted", "unban-notification"]
-        })
+    return sendAppealEmail({
+        toEmail,
+        toName: safeName,
+        subject: "Your AvalonCS appeal has been accepted",
+        html,
+        text,
+        type: "appeal-accepted"
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        console.log(data);
-        throw new Error("Failed to send unban email");
-    }
-
-    return data;
 }
 
 export async function sendAppealRejectedEmail({ toEmail, toName, username, reason }) {
-    if (!process.env.EMAIL_API_TOKEN) {
-        throw new Error("Missing EMAIL_API_TOKEN");
-    }
-
-    if (!toEmail) {
-        throw new Error("Missing destination email");
-    }
-
     const safeName = toName || username || "player";
+    const safeReason = reason || "No specific reason was provided.";
 
-    const htmlPart = `
+    const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,7 +163,7 @@ export async function sendAppealRejectedEmail({ toEmail, toName, username, reaso
             </h1>
 
             <p style="margin:0 0 16px;line-height:1.75;color:#c7d2ea;">
-                Hello ${safeName},
+                Hello ${escapeHtml(safeName)},
             </p>
 
             <p style="margin:0 0 16px;line-height:1.75;color:#c7d2ea;">
@@ -163,7 +175,7 @@ export async function sendAppealRejectedEmail({ toEmail, toName, username, reaso
             </p>
 
             <div style="margin:0 0 18px;padding:14px 16px;background:#0b0f18;border-radius:12px;border:1px solid #2a3347;color:#eef3ff;line-height:1.7;">
-                ${escapeHtml(reason)}
+                ${escapeHtml(safeReason)}
             </div>
 
             <p style="margin:0;line-height:1.75;color:#c7d2ea;">
@@ -176,7 +188,7 @@ export async function sendAppealRejectedEmail({ toEmail, toName, username, reaso
 </html>
 `.trim();
 
-    const textPart = [
+    const text = [
         "Your AvalonCS appeal has been rejected.",
         "",
         `Hello ${safeName},`,
@@ -184,48 +196,20 @@ export async function sendAppealRejectedEmail({ toEmail, toName, username, reaso
         "The Avalon Community Servers staff team has carefully reviewed your appeal and has decided not to approve it at this time.",
         "",
         "Reason provided by staff:",
-        reason,
+        safeReason,
         "",
         "Regards,",
         "Avalon Community Servers"
     ].join("\n");
 
-    const response = await fetch("https://avaloncs.ipzmarketing.com/api/v1/send_emails", {
-        method: "POST",
-        headers: {
-            "X-AUTH-TOKEN": process.env.EMAIL_API_TOKEN,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            from: {
-                email: "avaloncs@avaloncs.net",
-                name: "Avalon Community Servers"
-            },
-            to: [
-                {
-                    email: toEmail,
-                    name: safeName
-                }
-            ],
-            subject: "Your AvalonCS appeal has been rejected",
-            html_part: htmlPart,
-            text_part: textPart,
-            text_part_auto: true,
-            headers: {
-                "X-Source": "avaloncs-ban-appeals"
-            },
-            smtp_tags: ["appeal-rejected", "appeal-notification"]
-        })
+    return sendAppealEmail({
+        toEmail,
+        toName: safeName,
+        subject: "Your AvalonCS appeal has been rejected",
+        html,
+        text,
+        type: "appeal-rejected"
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        console.log(data);
-        throw new Error("Failed to send rejection email");
-    }
-
-    return data;
 }
 
 function escapeHtml(value) {
